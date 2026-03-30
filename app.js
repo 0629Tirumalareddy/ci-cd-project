@@ -1,37 +1,50 @@
 const http = require('http');
-const os = require('os');
 
 const PORT = 3000;
 
+const APP_VERSION = "v1.0.0";
+
+let requestCount = 0;
+const deployedAt = new Date();
+
 const server = http.createServer((req, res) => {
+  requestCount++;
 
-  if (req.url === "/") {
-    res.end("🚀 CI/CD App is Running Successfully!");
-  }
+  res.writeHead(200, { 'Content-Type': 'text/html' });
 
-  else if (req.url === "/health") {
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({
-      status: "UP",
-      uptime: process.uptime(),
-      timestamp: new Date()
-    }));
-  }
-
-  else if (req.url === "/system") {
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({
-      hostname: os.hostname(),
-      platform: os.platform(),
-      cpus: os.cpus().length,
-      memory: `${Math.round(os.freemem()/1024/1024)} MB free`
-    }));
-  }
-
-  else {
-    res.writeHead(404);
-    res.end("Route Not Found ❌");
-  }
+  res.end(`
+    <html>
+      <head>
+        <title>CI/CD Project</title>
+        <style>
+          body {
+            font-family: Arial;
+            text-align: center;
+            background: #0f172a;
+            color: white;
+            padding-top: 50px;
+          }
+          .box {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 10px;
+            display: inline-block;
+          }
+          h1 { color: #38bdf8; }
+          .green { color: #22c55e; }
+        </style>
+      </head>
+      <body>
+        <div class="box">
+          <h1> CI/CD Live Project</h1>
+          <p><b>Version:</b> ${APP_VERSION}</p>
+          <p><b>Deployed At:</b> ${deployedAt.toLocaleString()}</p>
+          <p><b>Total Requests:</b> ${requestCount}</p>
+          <p class="green"><b>Status:</b> Running ✅</p>
+        </div>
+      </body>
+    </html>
+  `);
 });
 
 server.listen(PORT, () => {
