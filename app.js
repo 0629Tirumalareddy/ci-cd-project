@@ -1,9 +1,39 @@
 const http = require('http');
+const os = require('os');
+
+const PORT = 3000;
 
 const server = http.createServer((req, res) => {
-  res.end("Hello This is Tiru----------My Node.js app is running on EC2 instance and triggered to github webhook");
+
+  if (req.url === "/") {
+    res.end("🚀 CI/CD App is Running Successfully!");
+  }
+
+  else if (req.url === "/health") {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({
+      status: "UP",
+      uptime: process.uptime(),
+      timestamp: new Date()
+    }));
+  }
+
+  else if (req.url === "/system") {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({
+      hostname: os.hostname(),
+      platform: os.platform(),
+      cpus: os.cpus().length,
+      memory: `${Math.round(os.freemem()/1024/1024)} MB free`
+    }));
+  }
+
+  else {
+    res.writeHead(404);
+    res.end("Route Not Found ❌");
+  }
 });
 
-server.listen(3000, () => {
-  console.log("Server running on port 3000");
+server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
