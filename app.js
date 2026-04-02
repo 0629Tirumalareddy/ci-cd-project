@@ -1,7 +1,7 @@
 const http = require('http');
 
 const PORT = 3000;
-const VERSION = "v1.0.0";
+const VERSION = "v1.0.1";
 const startTime = new Date();
 
 const server = http.createServer((req, res) => {
@@ -34,10 +34,10 @@ const server = http.createServer((req, res) => {
 
     <body>
       <div class="card">
-        <h1>🚀 CI/CD Live App</h1>
+        <h1>CI/CD Live App</h1>
         <p><b>Version:</b> ${VERSION}</p>
         <p><b>Deployed At:</b> ${startTime.toLocaleString()}</p>
-        <p class="green"><b>Status:</b> Running ✅</p>
+        <p class="green"><b>Status:</b> Running </p>
       </div>
     </body>
     </html>
