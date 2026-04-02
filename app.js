@@ -6,7 +6,7 @@ const PORT = 3000;
 const server = http.createServer((req, res) => {
 
   if (req.url === "/") {
-    res.end("This is Tiru from Terminal my app is going onlineeeeeeeeeeeeeeeeeeeeeeee!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    res.end("This is Tiru from Terminal my app is going onlineeeeeeeeeeeeee");
   }
 
   else if (req.url === "/health") {
