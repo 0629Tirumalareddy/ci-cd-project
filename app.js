@@ -1,39 +1,49 @@
 const http = require('http');
-const os = require('os');
 
 const PORT = 3000;
+const VERSION = "v1.0.0";
+const startTime = new Date();
 
 const server = http.createServer((req, res) => {
 
-  if (req.url === "/") {
-    res.end("This is Hemanth from Terminal my app is going online");
-  }
+  res.writeHead(200, { 'Content-Type': 'text/html' });
 
-  else if (req.url === "/health") {
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({
-      status: "UP",
-      uptime: process.uptime(),
-      timestamp: new Date()
-    }));
-  }
+  res.end(`
+    <html>
+    <head>
+      <title>CI/CD Project</title>
+      <style>
+        body {
+          font-family: Arial;
+          text-align: center;
+          background: linear-gradient(135deg, #1e3a8a, #0f172a);
+          color: white;
+          padding-top: 100px;
+        }
+        .card {
+          background: rgba(255,255,255,0.1);
+          padding: 30px;
+          border-radius: 15px;
+          display: inline-block;
+          box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        h1 { color: #38bdf8; }
+        .green { color: #22c55e; }
+      </style>
+    </head>
 
-  else if (req.url === "/system") {
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({
-      hostname: os.hostname(),
-      platform: os.platform(),
-      cpus: os.cpus().length,
-      memory: `${Math.round(os.freemem()/1024/1024)} MB free`
-    }));
-  }
-
-  else {
-    res.writeHead(404);
-    res.end("Route Not Found ❌");
-  }
+    <body>
+      <div class="card">
+        <h1>🚀 CI/CD Live App</h1>
+        <p><b>Version:</b> ${VERSION}</p>
+        <p><b>Deployed At:</b> ${startTime.toLocaleString()}</p>
+        <p class="green"><b>Status:</b> Running ✅</p>
+      </div>
+    </body>
+    </html>
+  `);
 });
 
 server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log("Server running on port 3000");
 });
